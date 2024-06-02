@@ -38,14 +38,24 @@ async function addContact() {
     const ansContact = await inquirer.prompt([{
             type: "input",
             name: "AddName",
-            message: chalk.italic.yellow.bold("Enter the name:\n")
-        },
-        {
+            message: chalk.italic.yellow.bold("Enter the name:\n"),
+            validate: function (AddName) {
+                if (AddName.length < AddName) {
+                    return chalk.italic.redBright.bold("Please enter a valid name");
+                }
+                return true;
+            }
+        }, {
             type: "number",
             name: "AddPhoneNo",
-            message: chalk.italic.magenta.bold("Enter the phone number:\n")
-        }
-    ]);
+            message: chalk.italic.magenta.bold("Enter the phone number:\n"),
+            validate: function (AddPhoneNo) {
+                if (isNaN(AddPhoneNo)) {
+                    return chalk.italic.redBright.bold("Please enter a number");
+                }
+                return true;
+            }
+        }]);
     list.push({ id: contactNo++, name: ansContact.AddName, phoneNo: ansContact.AddPhoneNo });
     console.log(chalk.italic.cyan.bold("Contact added successfully!\n"));
     contactList();
